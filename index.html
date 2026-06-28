@@ -6,213 +6,40 @@
     <title>AI Legislative Reform Companion</title>
     <style>
         * { box-sizing: border-box; }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f5f7fa;
-            color: #333;
-        }
-        header {
-            background: #003366;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f7fa; color: #333; }
+        header { background: #003366; color: white; padding: 30px 20px; text-align: center; }
         header h1 { margin: 0 0 8px; font-size: 1.8rem; }
         header p { margin: 0; opacity: 0.85; font-size: 1rem; }
-        nav {
-            background: #00244d;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 4px;
-            padding: 10px;
-        }
-        nav a {
-            color: #cce0ff;
-            text-decoration: none;
-            padding: 6px 14px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-        }
+        nav { background: #00244d; display: flex; justify-content: center; flex-wrap: wrap; gap: 4px; padding: 10px; }
+        nav a { color: #cce0ff; text-decoration: none; padding: 6px 14px; border-radius: 4px; font-size: 0.9rem; }
         nav a:hover { background: #0066cc; color: white; }
-        section {
-            max-width: 900px;
-            margin: 36px auto;
-            padding: 24px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+        section { max-width: 900px; margin: 36px auto; padding: 24px; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         h2 { color: #003366; margin-top: 0; }
         h3 { color: #0055aa; }
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.78rem;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: bold; margin-bottom: 12px; }
         .badge-green { background: #d4edda; color: #155724; }
-        .badge-blue  { background: #cce5ff; color: #004085; }
-
-        /* ── UPLOAD FORM ── */
-        .doc-form textarea {
-            width: 100%;
-            height: 180px;
-            padding: 12px;
-            border: 1px solid #ccd;
-            border-radius: 6px;
-            font-family: Arial, sans-serif;
-            font-size: 0.9rem;
-            resize: vertical;
-            margin-top: 12px;
-            margin-bottom: 12px;
-        }
-        .doc-form textarea:focus {
-            outline: none;
-            border-color: #0066cc;
-            box-shadow: 0 0 0 3px rgba(0,102,204,0.15);
-        }
-        .submit-btn {
-            display: inline-block;
-            padding: 12px 28px;
-            background: #0066cc;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+        textarea { width: 100%; height: 180px; padding: 12px; border: 1px solid #ccd; border-radius: 6px; font-family: Arial, sans-serif; font-size: 0.9rem; resize: vertical; margin-top: 12px; margin-bottom: 12px; }
+        textarea:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.15); }
+        .submit-btn { padding: 12px 28px; background: #0066cc; color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; }
         .submit-btn:hover { background: #004c99; }
-        .submit-btn:disabled { background: #99bbdd; cursor: not-allowed; }
-        #form-status {
-            margin-top: 14px;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 0.92rem;
-            display: none;
-        }
-        #form-status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            display: block;
-        }
-        #form-status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            display: block;
-        }
-        #form-status.loading {
-            background: #cce5ff;
-            color: #004085;
-            border: 1px solid #b8daff;
-            display: block;
-        }
-
-        .info-box {
-            margin-top: 16px;
-            padding: 14px 18px;
-            background: #eef3f8;
-            border-radius: 6px;
-            border-left: 4px solid #0066cc;
-            font-size: 0.92rem;
-            color: #444;
-        }
-        .chatbot-hints {
-            margin-top: 14px;
-            padding: 14px 18px;
-            background: #eef3f8;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: #444;
-        }
+        .info-box { margin-top: 16px; padding: 14px 18px; background: #eef3f8; border-radius: 6px; border-left: 4px solid #0066cc; font-size: 0.92rem; color: #444; }
+        .success-msg { display: none; margin-top: 14px; padding: 12px 16px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 6px; font-size: 0.92rem; }
+        .chatbot-hints { margin-top: 14px; padding: 14px 18px; background: #eef3f8; border-radius: 6px; font-size: 0.9rem; color: #444; }
         .chatbot-hints strong { display: block; margin-bottom: 6px; color: #003366; }
         .chatbot-hints ul { margin: 0; padding-left: 18px; }
         .chatbot-hints li { margin-bottom: 4px; }
-        .workflow-steps {
-            counter-reset: step;
-            list-style: none;
-            padding: 0;
-            margin: 16px 0;
-        }
-        .workflow-steps li {
-            counter-increment: step;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            margin-bottom: 14px;
-            font-size: 0.93rem;
-        }
-        .workflow-steps li::before {
-            content: counter(step);
-            background: #003366;
-            color: white;
-            border-radius: 50%;
-            min-width: 26px;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-        .output-preview {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 16px 20px;
-            font-size: 0.88rem;
-            line-height: 1.6;
-            margin-top: 14px;
-            white-space: pre-wrap;
-            color: #333;
-            max-height: 320px;
-            overflow-y: auto;
-        }
-        .output-preview .section-head {
-            font-weight: bold;
-            color: #003366;
-            display: block;
-            margin: 10px 0 4px;
-        }
-        .intel-item {
-            padding: 10px 14px;
-            border-left: 3px solid #0066cc;
-            background: #f0f6ff;
-            border-radius: 0 6px 6px 0;
-            margin-bottom: 10px;
-            font-size: 0.88rem;
-            line-height: 1.5;
-        }
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 14px;
-            margin-top: 16px;
-        }
-        .module-card {
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 14px;
-        }
+        .workflow-steps { counter-reset: step; list-style: none; padding: 0; margin: 16px 0; }
+        .workflow-steps li { counter-increment: step; display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; font-size: 0.93rem; }
+        .workflow-steps li::before { content: counter(step); background: #003366; color: white; border-radius: 50%; min-width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; flex-shrink: 0; }
+        .output-preview { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 16px 20px; font-size: 0.88rem; line-height: 1.6; margin-top: 14px; white-space: pre-wrap; color: #333; max-height: 320px; overflow-y: auto; }
+        .section-head { font-weight: bold; color: #003366; display: block; margin: 10px 0 4px; }
+        .intel-item { padding: 10px 14px; border-left: 3px solid #0066cc; background: #f0f6ff; border-radius: 0 6px 6px 0; margin-bottom: 10px; font-size: 0.88rem; line-height: 1.5; }
+        .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 16px; }
+        .module-card { border: 1px solid #dee2e6; border-radius: 6px; padding: 14px; }
         .module-card .week { font-size: 0.78rem; font-weight: bold; color: #0066cc; text-transform: uppercase; margin-bottom: 4px; }
         .module-card .tool { font-weight: bold; color: #003366; margin-bottom: 4px; }
         .module-card .desc { font-size: 0.85rem; color: #555; }
-        footer {
-            text-align: center;
-            padding: 24px;
-            font-size: 0.82rem;
-            color: #888;
-        }
+        footer { text-align: center; padding: 24px; font-size: 0.82rem; color: #888; }
     </style>
 </head>
 <body>
@@ -234,12 +61,14 @@
 <section id="upload">
     <span class="badge badge-green">✔ Live — Week 5 Automation</span>
     <h2>1. Analyse a Policy Document</h2>
-    <p>Paste the text of a Pacific health policy document or legislation excerpt below. The workflow will generate a legislative brief, evidence cross‑walk, numeric data extract, and visual explainer — delivered to your inbox automatically.</p>
+    <p>Paste the text of a Pacific health policy document or legislation excerpt below and submit. The workflow will generate a legislative brief, evidence cross‑walk, numeric data extract, and visual explainer — delivered to your inbox automatically.</p>
 
-    <div class="doc-form">
-        <textarea id="doc-input" placeholder="Paste your legislative document or policy excerpt here...
+    <!-- Plain HTML form — no CORS issues, posts directly to Relay webhook -->
+    <form id="doc-form" action="https://hook.relay.app/api/v1/playbook/cmqxniog78btw0qm53b3950lt/trigger/mKMq0uZ5MGRzZlZ2DpiZOw" method="POST" target="hidden-frame" onsubmit="showSuccess()">
+        <textarea name="document_text" placeholder="Paste your legislative document or policy excerpt here...
 
-Example: Fiji Tobacco Control Act 1998 — Selected Provisions
+Example:
+Fiji Tobacco Control Act 1998 — Selected Provisions
 
 Section 4: No person shall smoke in any public place or workplace.
 Penalty: $200 fine for individuals, $500 for body corporate.
@@ -250,12 +79,14 @@ Section 7: All tobacco products must carry a health warning covering
 Section 12: No person shall sell tobacco products to any person under
 the age of 18 years. Penalty: $1,000 fine."></textarea>
 
-        <button class="submit-btn" id="submit-btn" onclick="submitDocument()">
-            🚀 Submit for Analysis
-        </button>
+        <button type="submit" class="submit-btn">🚀 Submit for Analysis</button>
+        <div class="success-msg" id="success-msg">
+            ✅ Document submitted! Your legislative brief and analysis will arrive by email within 60 seconds.
+        </div>
+    </form>
 
-        <div id="form-status"></div>
-    </div>
+    <!-- Hidden iframe absorbs the form POST response — keeps user on the page -->
+    <iframe name="hidden-frame" style="display:none;"></iframe>
 
     <div class="info-box">
         <strong>What happens next:</strong> Your document is sent to a Relay.app automation workflow which runs five AI steps — Legislative Brief → Cross‑Walk → Numeric Data Extract → Visual Explainer → Email Delivery. Results arrive in your inbox within 60 seconds.
@@ -315,7 +146,7 @@ The packaging warning covers only 30% of the front panel with no graphic warning
 
     <h3>Latest Brief — Week of 28 June 2026</h3>
     <div class="intel-item"><strong>🇫🇯 Fiji</strong> — Public Health (Amendment) Act now in force, tightening environmental health oversight and requiring land development applications to include drainage and site access details.</div>
-    <div class="intel-item"><strong>🇼🇸 Samoa</strong> — Tamanu EHR rollout progressing ahead of 6 July 2026 go-live at TTM Hospital, backed by Australian ICT support. One Health Pandemic Preparedness project officially launched with Pandemic Fund support.</div>
+    <div class="intel-item"><strong>🇼🇸 Samoa</strong> — Tamanu EHR rollout progressing ahead of 6 July 2026 go-live at TTM Hospital. One Health Pandemic Preparedness project officially launched with Pandemic Fund support.</div>
     <div class="intel-item"><strong>🇵🇬 PNG</strong> — Government ordered nationwide El Niño preparedness spanning health, water, food security and disaster systems following Prime Minister directive on 22 June 2026.</div>
     <div class="intel-item"><strong>🇹🇴 Tonga</strong> — 2026/2027 Government Budget passed by Parliament on 18 June 2026, creating the spending framework for health, preparedness, and primary health care.</div>
     <div class="intel-item"><strong>🌏 Regional (SPC/WHO)</strong> — Regional Steering Committee Meeting of the Pacific Partnership for Atoll Water Security convened in Nadi, Fiji. WHO dengue update shows decreasing trends across 19 reporting Pacific Island Countries.</div>
@@ -329,36 +160,12 @@ Across the Pacific in the week ending 28 June 2026, the clearest policy signal w
     <h2>5. About This Project</h2>
     <p>The AI Legislative Reform Companion demonstrates how AI tools can support evidence-based legislative reform in Pacific health systems. Built as a final project for an AI course, it integrates six weeks of learning into one working prototype.</p>
     <div class="module-grid">
-        <div class="module-card">
-            <div class="week">Week 1</div>
-            <div class="tool">GitHub Pages</div>
-            <div class="desc">This website — live project showcase and chatbot host</div>
-        </div>
-        <div class="module-card">
-            <div class="week">Week 2</div>
-            <div class="tool">Data Analytics</div>
-            <div class="desc">Numeric extraction of penalties, fees, and thresholds from legislation</div>
-        </div>
-        <div class="module-card">
-            <div class="week">Week 3</div>
-            <div class="tool">Deep Research</div>
-            <div class="desc">Evidence-to-clause cross‑walk and weekly policy intelligence brief</div>
-        </div>
-        <div class="module-card">
-            <div class="week">Week 4</div>
-            <div class="tool">Botpress Chatbot</div>
-            <div class="desc">AI assistant trained on Pacific health legislation documents</div>
-        </div>
-        <div class="module-card">
-            <div class="week">Week 5</div>
-            <div class="tool">Relay.app Automation</div>
-            <div class="desc">Document analysis pipeline and weekly scheduled intelligence workflow</div>
-        </div>
-        <div class="module-card">
-            <div class="week">Week 6</div>
-            <div class="tool">Visual Design</div>
-            <div class="desc">AI-generated Canva infographic instructions from legislative analysis</div>
-        </div>
+        <div class="module-card"><div class="week">Week 1</div><div class="tool">GitHub Pages</div><div class="desc">This website — live project showcase and chatbot host</div></div>
+        <div class="module-card"><div class="week">Week 2</div><div class="tool">Data Analytics</div><div class="desc">Numeric extraction of penalties, fees, and thresholds from legislation</div></div>
+        <div class="module-card"><div class="week">Week 3</div><div class="tool">Deep Research</div><div class="desc">Evidence-to-clause cross‑walk and weekly policy intelligence brief</div></div>
+        <div class="module-card"><div class="week">Week 4</div><div class="tool">Botpress Chatbot</div><div class="desc">AI assistant trained on Pacific health legislation documents</div></div>
+        <div class="module-card"><div class="week">Week 5</div><div class="tool">Relay.app Automation</div><div class="desc">Document analysis pipeline and weekly scheduled intelligence workflow</div></div>
+        <div class="module-card"><div class="week">Week 6</div><div class="tool">Visual Design</div><div class="desc">AI-generated Canva infographic instructions from legislative analysis</div></div>
     </div>
 </section>
 
@@ -371,42 +178,10 @@ Across the Pacific in the week ending 28 June 2026, the clearest policy signal w
 <script src="https://files.bpcontent.cloud/2026/06/28/05/20260628053730-WHZDAYG0.js" defer></script>
 
 <script>
-async function submitDocument() {
-    const text = document.getElementById('doc-input').value.trim();
-    const btn = document.getElementById('submit-btn');
-    const status = document.getElementById('form-status');
-
-    if (!text) {
-        status.className = 'error';
-        status.textContent = '⚠ Please paste a document or policy excerpt before submitting.';
-        return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Submitting...';
-    status.className = 'loading';
-    status.textContent = '⏳ Sending to analysis workflow... please wait.';
-
-    try {
-        const response = await fetch('https://hook.relay.app/api/v1/playbook/cmqxniog78btw0qm53b3950lt/trigger/mKMq0uZ5MGRzZlZ2DpiZOw', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ document_text: text })
-        });
-
-        if (response.ok) {
-            status.className = 'success';
-            status.textContent = '✅ Document submitted successfully! Your legislative brief and analysis will arrive by email within 60 seconds.';
-            btn.textContent = '✔ Submitted';
-        } else {
-            throw new Error('Server returned ' + response.status);
-        }
-    } catch (err) {
-        status.className = 'error';
-        status.textContent = '❌ Submission failed. Please try again or contact the administrator. (' + err.message + ')';
-        btn.disabled = false;
-        btn.textContent = '🚀 Submit for Analysis';
-    }
+function showSuccess() {
+    setTimeout(function() {
+        document.getElementById('success-msg').style.display = 'block';
+    }, 500);
 }
 </script>
 
