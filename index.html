@@ -58,18 +58,65 @@
         }
         .badge-green { background: #d4edda; color: #155724; }
         .badge-blue  { background: #cce5ff; color: #004085; }
-        .upload-btn {
+
+        /* ── UPLOAD FORM ── */
+        .doc-form textarea {
+            width: 100%;
+            height: 180px;
+            padding: 12px;
+            border: 1px solid #ccd;
+            border-radius: 6px;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            resize: vertical;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+        .doc-form textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.15);
+        }
+        .submit-btn {
             display: inline-block;
-            padding: 12px 20px;
+            padding: 12px 28px;
             background: #0066cc;
             color: white;
+            border: none;
             border-radius: 6px;
-            text-decoration: none;
+            font-size: 1rem;
             font-weight: bold;
-            margin-top: 10px;
             cursor: pointer;
+            transition: background 0.2s;
         }
-        .upload-btn:hover { background: #004c99; }
+        .submit-btn:hover { background: #004c99; }
+        .submit-btn:disabled { background: #99bbdd; cursor: not-allowed; }
+        #form-status {
+            margin-top: 14px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            display: none;
+        }
+        #form-status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        #form-status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        #form-status.loading {
+            background: #cce5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+            display: block;
+        }
+
         .info-box {
             margin-top: 16px;
             padding: 14px 18px;
@@ -157,13 +204,7 @@
             border-radius: 6px;
             padding: 14px;
         }
-        .module-card .week {
-            font-size: 0.78rem;
-            font-weight: bold;
-            color: #0066cc;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
+        .module-card .week { font-size: 0.78rem; font-weight: bold; color: #0066cc; text-transform: uppercase; margin-bottom: 4px; }
         .module-card .tool { font-weight: bold; color: #003366; margin-bottom: 4px; }
         .module-card .desc { font-size: 0.85rem; color: #555; }
         footer {
@@ -184,19 +225,40 @@
 <nav>
     <a href="#upload">Document Analysis</a>
     <a href="#chatbot">AI Chatbot</a>
-    <a href="#workflow-3a">Document Workflow</a>
+    <a href="#workflow-3a">How It Works</a>
     <a href="#workflow-3b">Weekly Intelligence</a>
     <a href="#about">About</a>
 </nav>
 
-<!-- SECTION 1: UPLOAD -->
+<!-- SECTION 1: UPLOAD FORM -->
 <section id="upload">
     <span class="badge badge-green">✔ Live — Week 5 Automation</span>
-    <h2>1. Document Analysis Workflow</h2>
-    <p>Upload a Pacific health policy document to trigger an automated analysis pipeline. The workflow generates a legislative brief, evidence cross‑walk, numeric data extract, and visual explainer — delivered to your inbox within minutes.</p>
-    <a class="upload-btn">Upload Document (Demo)</a>
+    <h2>1. Analyse a Policy Document</h2>
+    <p>Paste the text of a Pacific health policy document or legislation excerpt below. The workflow will generate a legislative brief, evidence cross‑walk, numeric data extract, and visual explainer — delivered to your inbox automatically.</p>
+
+    <div class="doc-form">
+        <textarea id="doc-input" placeholder="Paste your legislative document or policy excerpt here...
+
+Example: Fiji Tobacco Control Act 1998 — Selected Provisions
+
+Section 4: No person shall smoke in any public place or workplace.
+Penalty: $200 fine for individuals, $500 for body corporate.
+
+Section 7: All tobacco products must carry a health warning covering
+30% of the front panel of the package.
+
+Section 12: No person shall sell tobacco products to any person under
+the age of 18 years. Penalty: $1,000 fine."></textarea>
+
+        <button class="submit-btn" id="submit-btn" onclick="submitDocument()">
+            🚀 Submit for Analysis
+        </button>
+
+        <div id="form-status"></div>
+    </div>
+
     <div class="info-box">
-        <strong>How it works:</strong> Clicking Upload triggers a Relay.app automation workflow with 5 steps — Legislative Brief → Cross‑Walk → Numeric Data Extract → Visual Explainer → Email Delivery.
+        <strong>What happens next:</strong> Your document is sent to a Relay.app automation workflow which runs five AI steps — Legislative Brief → Cross‑Walk → Numeric Data Extract → Visual Explainer → Email Delivery. Results arrive in your inbox within 60 seconds.
     </div>
 </section>
 
@@ -204,7 +266,7 @@
 <section id="chatbot">
     <span class="badge badge-green">✔ Live — Week 4 Chatbot</span>
     <h2>2. AI Legislative Chatbot</h2>
-    <p>Ask questions about Pacific health legislation — including enforcement gaps, clauses, penalties, and recommended amendments. The assistant draws on uploaded policy documents including the Fiji Tobacco Control Act, Kava Amendment Bill, and liquor control acts from Nauru, Solomon Islands, and Tuvalu.</p>
+    <p>Ask questions about Pacific health legislation — including enforcement gaps, clauses, penalties, and recommended amendments. The assistant draws on uploaded policy documents including the Fiji Tobacco Control Act, the Kava Amendment Bill, and liquor control acts from Nauru, Solomon Islands, and Tuvalu.</p>
     <div class="chatbot-hints">
         <strong>Try asking:</strong>
         <ul>
@@ -216,79 +278,56 @@
     </div>
 </section>
 
-<!-- SECTION 3A: RELAY DOCUMENT WORKFLOW -->
+<!-- SECTION 3A: HOW IT WORKS -->
 <section id="workflow-3a">
     <span class="badge badge-green">✔ Live — Week 5 Automation</span>
-    <h2>3. Document Analysis Workflow (Relay.app)</h2>
-    <p>This automation runs when a legislative document is submitted. It processes the document through four AI steps and delivers a complete analysis package by email.</p>
-
-    <h3>Workflow Steps</h3>
+    <h2>3. How the Document Workflow Works</h2>
+    <p>When you submit a document above, it triggers a five-step AI pipeline in Relay.app that processes the legislation and delivers a complete analysis package by email.</p>
     <ol class="workflow-steps">
-        <li><strong>Manual Trigger</strong> — Workflow is started with the document text as input</li>
-        <li><strong>Generate Legislative Brief</strong> — AI produces an executive summary, key provisions, enforcement gaps, and recommended amendments</li>
+        <li><strong>Webhook Trigger</strong> — Form submission sends document text to Relay.app via secure webhook</li>
+        <li><strong>Generate Legislative Brief</strong> — AI produces executive summary, key provisions, enforcement gaps, and recommended amendments</li>
         <li><strong>Generate Cross‑Walk</strong> — AI maps evidence to clauses to proposed amendments in a structured table</li>
         <li><strong>Extract Numeric Data</strong> — AI extracts all penalties, fees, thresholds, and timeframes into a dataset</li>
         <li><strong>Generate Visual Explainer</strong> — AI produces Canva-ready infographic design instructions</li>
-        <li><strong>Email Delivery</strong> — All four outputs delivered to inbox automatically</li>
+        <li><strong>Email Delivery</strong> — All outputs delivered to inbox automatically</li>
     </ol>
 
     <h3>Sample Output — Legislative Brief</h3>
     <div class="output-preview"><span class="section-head">=== LEGISLATIVE BRIEF ===</span>
-This Act establishes basic tobacco controls including smoke-free public places, health warnings on packs, a ban on sales to children, inspection powers, and some advertising restrictions. However, the rules are limited and the penalties are low, which may reduce deterrence and make compliance uneven. Several provisions also leave loopholes, especially around advertising and packaging warnings.
+This Act establishes basic tobacco controls including smoke-free public places, health warnings on packs, a ban on sales to children, inspection powers, and some advertising restrictions. However, the rules are limited and the penalties are low, which may reduce deterrence and make compliance uneven.
 
 <span class="section-head">ENFORCEMENT GAPS</span>
-The packaging warning requirement is likely inadequate — covering only 30% of the front panel with no mention of pictorial warnings, plain packaging, or back-of-pack requirements. The advertising ban is incomplete, leaving loopholes for sponsorship, digital media, and point-of-sale promotion. Penalties are relatively low and may not deter large corporate operators.
+The packaging warning covers only 30% of the front panel with no graphic warnings or back-of-pack requirements. The advertising ban leaves loopholes for sponsorship, digital media, and point-of-sale promotion. Penalties are too low to deter large corporate operators.
 
 <span class="section-head">RECOMMENDED AMENDMENTS</span>
-• Increase pack warnings to at least 75% front and back with graphic images
-• Replace partial advertising restrictions with a comprehensive ban across all media
-• Raise penalties substantially with escalating fines for repeat offences
-• Add explicit enforcement powers including seizure, compliance notices, and prosecution support
-• Introduce retailer licensing with suspension powers for repeated violations</div>
-
-    <h3>Sample Output — Visual Explainer Instructions</h3>
-    <div class="output-preview">Fiji Tobacco Control Act 1998 — Key Findings at a Glance
-
-HEADLINE STAT: 30% — current pack warning covers only 30% of the front panel
-
-ENFORCEMENT GAPS:
-🚫 Advertising loopholes remain    ⚠ Penalties too low to deter    🔍 Inspections lack seizure power
-
-CALL TO ACTION:
-Update the Act now to close loopholes, raise penalties, and give health authorities clear enforcement powers.
-
-DESIGN: One-page vertical infographic. Ocean blue title banner. Coral headline stat box. Three-column enforcement gap cards with icons. Two-column clause risk table (RED/AMBER/GREEN). Full-width green call-to-action footer.</div>
+• Increase pack warnings to 75% front and back with graphic images
+• Replace partial advertising restrictions with a comprehensive ban
+• Raise penalties with escalating fines for repeat offences
+• Add enforcement powers: seizure, compliance notices, prosecution
+• Introduce retailer licensing with suspension for repeated violations</div>
 </section>
 
 <!-- SECTION 3B: WEEKLY INTELLIGENCE -->
 <section id="workflow-3b">
-    <span class="badge badge-green">✔ Live — Week 5 Automation + Week 3 Deep Research</span>
+    <span class="badge badge-green">✔ Live — Runs Every Monday 8:00 AM FJT</span>
     <h2>4. Weekly Pacific Health Policy Intelligence</h2>
-    <p>Every Monday at 8:00 AM Fiji time, this workflow automatically generates a Pacific health policy intelligence brief and delivers it by email. It covers policy developments across Fiji, Samoa, Tonga, Vanuatu, PNG, Solomon Islands, and regional bodies including SPC, WHO, UNICEF, DFAT, and MFAT.</p>
+    <p>Every Monday at 8:00 AM Fiji time, an automated Relay.app workflow generates a Pacific health policy intelligence brief covering Fiji, Samoa, Tonga, Vanuatu, PNG, Solomon Islands, and regional bodies including SPC, WHO, UNICEF, DFAT, and MFAT.</p>
 
-    <h3>Workflow Steps</h3>
-    <ol class="workflow-steps">
-        <li><strong>Scheduled Trigger</strong> — Runs automatically every Monday at 8:00 AM FJT</li>
-        <li><strong>Generate Intelligence Brief</strong> — AI produces a structured weekly brief covering headline events, country updates, policy stage tracker, key actors, and legislative implications</li>
-        <li><strong>Email Delivery</strong> — Brief delivered to inbox automatically</li>
-    </ol>
-
-    <h3>Sample Output — Week of 28 June 2026</h3>
+    <h3>Latest Brief — Week of 28 June 2026</h3>
     <div class="intel-item"><strong>🇫🇯 Fiji</strong> — Public Health (Amendment) Act now in force, tightening environmental health oversight and requiring land development applications to include drainage and site access details.</div>
-    <div class="intel-item"><strong>🇼🇸 Samoa</strong> — Tamanu EHR rollout progressing ahead of 6 July 2026 go-live at TTM Hospital, backed by Australian ICT support under the Samoa E-Health Project. One Health Pandemic Preparedness project officially launched.</div>
+    <div class="intel-item"><strong>🇼🇸 Samoa</strong> — Tamanu EHR rollout progressing ahead of 6 July 2026 go-live at TTM Hospital, backed by Australian ICT support. One Health Pandemic Preparedness project officially launched with Pandemic Fund support.</div>
     <div class="intel-item"><strong>🇵🇬 PNG</strong> — Government ordered nationwide El Niño preparedness spanning health, water, food security and disaster systems following Prime Minister directive on 22 June 2026.</div>
-    <div class="intel-item"><strong>🇹🇴 Tonga</strong> — 2026/2027 Government Budget passed by Parliament on 18 June 2026, creating the spending framework for health, preparedness, and PHC.</div>
+    <div class="intel-item"><strong>🇹🇴 Tonga</strong> — 2026/2027 Government Budget passed by Parliament on 18 June 2026, creating the spending framework for health, preparedness, and primary health care.</div>
     <div class="intel-item"><strong>🌏 Regional (SPC/WHO)</strong> — Regional Steering Committee Meeting of the Pacific Partnership for Atoll Water Security convened in Nadi, Fiji. WHO dengue update shows decreasing trends across 19 reporting Pacific Island Countries.</div>
 
-    <h3>Pacific Health Snapshot</h3>
-    <div class="output-preview">Across the Pacific in the week ending 28 June 2026, the clearest policy signal was a shift toward resilience: governments and partners focused on water security, emergency workforce readiness, digital health and climate-linked preparedness. Papua New Guinea elevated El Niño readiness across health and water systems, and Samoa kept momentum behind hospital EHR rollout. Solomon Islands and Vanuatu continued practical service-delivery reforms in primary care and disaster-resilient facilities. WHO's latest dengue update suggests a relatively stable surveillance picture in reporting Pacific island countries.</div>
+    <div class="output-preview"><span class="section-head">PACIFIC HEALTH SNAPSHOT</span>
+Across the Pacific in the week ending 28 June 2026, the clearest policy signal was a shift toward resilience: governments and partners focused on water security, emergency workforce readiness, digital health and climate-linked preparedness. Papua New Guinea elevated El Niño readiness across health and water systems, and Samoa kept momentum behind hospital EHR rollout. Solomon Islands and Vanuatu continued practical service-delivery reforms in primary care and disaster-resilient facilities. WHO's latest dengue update suggests a relatively stable surveillance picture across reporting Pacific island countries.</div>
 </section>
 
 <!-- SECTION 4: ABOUT -->
 <section id="about">
     <h2>5. About This Project</h2>
     <p>The AI Legislative Reform Companion demonstrates how AI tools can support evidence-based legislative reform in Pacific health systems. Built as a final project for an AI course, it integrates six weeks of learning into one working prototype.</p>
-
     <div class="module-grid">
         <div class="module-card">
             <div class="week">Week 1</div>
@@ -330,6 +369,46 @@ DESIGN: One-page vertical infographic. Ocean blue title banner. Coral headline s
 <!-- Botpress Webchat -->
 <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
 <script src="https://files.bpcontent.cloud/2026/06/28/05/20260628053730-WHZDAYG0.js" defer></script>
+
+<script>
+async function submitDocument() {
+    const text = document.getElementById('doc-input').value.trim();
+    const btn = document.getElementById('submit-btn');
+    const status = document.getElementById('form-status');
+
+    if (!text) {
+        status.className = 'error';
+        status.textContent = '⚠ Please paste a document or policy excerpt before submitting.';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    status.className = 'loading';
+    status.textContent = '⏳ Sending to analysis workflow... please wait.';
+
+    try {
+        const response = await fetch('https://hook.relay.app/api/v1/playbook/cmqxniog78btw0qm53b3950lt/trigger/mKMq0uZ5MGRzZlZ2DpiZOw', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ document_text: text })
+        });
+
+        if (response.ok) {
+            status.className = 'success';
+            status.textContent = '✅ Document submitted successfully! Your legislative brief and analysis will arrive by email within 60 seconds.';
+            btn.textContent = '✔ Submitted';
+        } else {
+            throw new Error('Server returned ' + response.status);
+        }
+    } catch (err) {
+        status.className = 'error';
+        status.textContent = '❌ Submission failed. Please try again or contact the administrator. (' + err.message + ')';
+        btn.disabled = false;
+        btn.textContent = '🚀 Submit for Analysis';
+    }
+}
+</script>
 
 </body>
 </html>
