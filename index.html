@@ -51,9 +51,33 @@
             color: #666;
             border: 1px dashed #aac;
         }
+        .chatbot-intro {
+            margin-bottom: 16px;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        .chatbot-hints {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #eef3f8;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #444;
+        }
+        .chatbot-hints strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #003366;
+        }
+        .chatbot-hints ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+        .chatbot-hints li {
+            margin-bottom: 4px;
+        }
     </style>
 </head>
-
 <body>
 
 <header>
@@ -65,18 +89,24 @@
     <h2>1. Upload Your Policy Document</h2>
     <p>This demo simulates uploading a legislative or policy document for automated analysis.</p>
     <a class="upload-btn">Upload Document</a>
-
     <div class="placeholder">
         (In the live demo, this triggers the Relay.app workflow)
     </div>
 </section>
 
 <section>
-    <h2>2. AI Chatbot</h2>
-    <p>Ask questions about your uploaded document, clauses, gaps, or recommended amendments.</p>
-
-    <div class="placeholder">
-        Your Botpress chatbot will appear here in Step 2.
+    <h2>2. AI Legislative Chatbot</h2>
+    <p class="chatbot-intro">
+        Ask the assistant questions about Pacific health legislation — including gaps, clauses, 
+        penalties, and recommended amendments. The bot draws on uploaded policy documents.
+    </p>
+    <div class="chatbot-hints">
+        <strong>Try asking:</strong>
+        <ul>
+            <li>"Summarise the enforcement gaps in the Fiji Tobacco Control Act"</li>
+            <li>"Which clauses relate to licensing in the Kava Amendment Bill?"</li>
+            <li>"What penalties exist in the Nauru Liquor Control Act?"</li>
+        </ul>
     </div>
 </section>
 
@@ -94,6 +124,9 @@
     </ul>
 </section>
 
+<!-- Botpress Webchat — loads as a floating chat bubble on all pages -->
+<script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2026/06/28/05/20260628053730-WHZDAYG0.js" defer></script>
+
 </body>
 </html>
-
